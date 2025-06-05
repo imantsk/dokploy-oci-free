@@ -17,6 +17,14 @@ systemctl status sshd
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 systemctl restart sshd
 
+# Setup swapfile
+fallocate -l 2G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+sysctl vm.swappiness=10
+sysctl vm.vfs_cache_pressure=50
+
 # Allow Docker Swarm traffic
 ufw allow 80,443,3000,996,7946,4789,2377/tcp
 ufw allow 7946,4789,2377/udp
